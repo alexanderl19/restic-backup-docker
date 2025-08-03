@@ -25,14 +25,15 @@ echo "Starting Check at $(date +"%Y-%m-%d %H:%M:%S")"
 echo "Starting Check at $(date)" >> ${lastLogfile}
 logLast "CHECK_CRON: ${CHECK_CRON}"
 logLast "RESTIC_DATA_SUBSET: ${RESTIC_DATA_SUBSET}"
+logLast "RESTIC_CHECK_ARGS: ${RESTIC_CHECK_ARGS}"
 logLast "RESTIC_REPOSITORY: ${RESTIC_REPOSITORY}"
 logLast "AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}"
 
 # Do not save full check log to logfile but to check-last.log
 if [ -n "${RESTIC_DATA_SUBSET}" ]; then
-    restic check --read-data-subset=${RESTIC_DATA_SUBSET} >> ${lastLogfile} 2>&1
+    restic check ${RESTIC_CHECK_ARGS} --read-data-subset=${RESTIC_DATA_SUBSET} >> ${lastLogfile} 2>&1
 else
-    restic check >> ${lastLogfile} 2>&1
+    restic check ${RESTIC_CHECK_ARGS} >> ${lastLogfile} 2>&1
 fi
 checkRC=$?
 logLast "Finished check at $(date)"
